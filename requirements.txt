@@ -1,0 +1,24 @@
+# Core
+streamlit
+python-dotenv
+
+# PDF Processing
+PyPDF2
+pdfplumber
+
+# NLP & Text Processing
+spacy
+transformers
+nltk
+
+# LLM Integration
+groq
+
+# Testing
+pytest
+pytest-cov
+
+# Development
+black
+isort
+flake8
