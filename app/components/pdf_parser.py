@@ -1,3 +1,4 @@
+import PyPDF2
 import pdfplumber
 
 class PDFParser:

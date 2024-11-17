@@ -27,18 +27,15 @@ class TextComparer:
                 for i in range(i1, i2):
                     side_by_side['left'].append(('equal', left_lines[i]))
                     side_by_side['right'].append(('equal', right_lines[j1 + (i - i1)]))
-                    
             elif tag == 'replace':
                 for i, j in zip(range(i1, i2), range(j1, j2)):
                     if i < len(left_lines):
                         side_by_side['left'].append(('delete', left_lines[i]))
                     if j < len(right_lines):
                         side_by_side['right'].append(('insert', right_lines[j]))
-                        
             elif tag == 'delete':
                 for i in range(i1, i2):
                     side_by_side['left'].append(('delete', left_lines[i]))
-                    
             elif tag == 'insert':
                 for j in range(j1, j2):
                     side_by_side['right'].append(('insert', right_lines[j]))
