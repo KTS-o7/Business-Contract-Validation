@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from components.pdf_parser import PDFParser
 from components.text_compare import TextComparer
 from components.ner_extractor import NERExtractor
@@ -6,6 +7,7 @@ from components.llm_analyzer import LLMAnalyzer
 from utils.helpers import validate_file_type
 
 def main():
+    st.set_page_config(page_title="Business Contract Validator", layout="wide")
     st.title("Business Contract Validator")
     
     # File uploaders
@@ -39,7 +41,13 @@ def main():
                 st.info(f"{similarity:.2%}")
                 
                 st.subheader("Named Entities")
-                st.json(entities)
+                # types of named entities
+                st.write("Types of named entities found:" , " ,".join(entities.keys()))
+                # Convert entities to a list of dictionaries for DataFrame
+                entities_list = [{k: v[i] if i < len(v) else '' for k, v in entities.items()} for i in range(max(map(len, entities.values())))]
+                st.markdown(pd.DataFrame(entities_list).to_markdown())
+                
+            
                 
                 st.subheader("AI Analysis")
                 st.write(analysis)
