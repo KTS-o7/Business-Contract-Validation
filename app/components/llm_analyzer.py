@@ -1,5 +1,6 @@
 # app/components/llm_analyzer.py
 import os
+import httpx
 from groq import Groq
 
 class LLMAnalyzer:
@@ -10,7 +11,13 @@ class LLMAnalyzer:
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             raise ValueError("GROQ_API_KEY environment variable is required")
-        self.client = Groq(api_key=api_key)
+
+        http_client = httpx.Client(
+            timeout=60.0,
+            transport=httpx.HTTPTransport(retries=3)
+        )
+        
+        self.client = Groq(api_key=api_key,http_client=http_client)
 
     def _chunk_differences(self, differences: list[str], chunk_size: int = 10) -> list[list[str]]:
         """Split differences into manageable chunks"""

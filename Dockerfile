@@ -5,16 +5,17 @@ FROM nvidia/cuda:12.3.1-runtime-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
-# System dependencies
+# System dependencies with fixed Python 3.12 installation
 RUN apt-get update && apt-get install -y \
     software-properties-common \
     wget \
+    ca-certificates \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y \
     python3.12 \
-    python3.12-distutils \
     python3.12-dev \
+    python3.12-venv \
     python3-pip \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
@@ -30,9 +31,11 @@ RUN update-alternatives --install /usr/bin/pip3 pip3 /usr/local/bin/pip3.12 1
 
 WORKDIR /app
 
-# Python dependencies
+# Copy and install requirements
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Install spacy model
 RUN python3 -m spacy download en_core_web_sm
 
 # Copy application code
@@ -42,4 +45,4 @@ COPY . .
 ENV STREAMLIT_SERVER_PORT=8501
 ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
-CMD ["streamlit", "run", "app/main.py"]
+CMD ["streamlit", "run", "app/main.py", "--server.port=8501", "--server.address=0.0.0.0"]

@@ -8,3 +8,4 @@ def validate_file_type(file_path: str, allowed_extensions: list[str] = ['.pdf'])
 def clean_text(text: str) -> str:
     """Clean and normalize text"""
     return ' '.join(text.split())
+
