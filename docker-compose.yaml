@@ -1,4 +1,4 @@
-# docker-compose.yml
+# docker-compose.yaml
 services:
   contract-validator:
     build: .
@@ -10,9 +10,14 @@ services:
     env_file:
       - .env
     environment:
+      - HTTP_PROXY=""
+      - HTTPS_PROXY=""
+      - NO_PROXY="*"
       - GROQ_API_KEY=${GROQ_API_KEY}
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
     deploy:
       resources:
         reservations:
